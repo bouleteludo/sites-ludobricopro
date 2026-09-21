@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { QuoteForm } from "@/components/QuoteForm";
 import { IconPhone, IconMail, IconPin } from "@/components/icons";
+import { Reveal } from "@/components/Reveal";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Contact" };
@@ -9,7 +10,7 @@ export default function ContactPage() {
   return (
     <main className="container py-16 sm:py-20">
       <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-12">
-        <div>
+        <Reveal>
           <p className="text-xs tracking-[0.3em] uppercase text-leaf-600 font-semibold mb-3">Contact</p>
           <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-navy-950 mb-6">
             Une question ? Contactez-nous
@@ -49,12 +50,14 @@ export default function ContactPage() {
               </div>
             </li>
           </ul>
-        </div>
+        </Reveal>
 
-        <div className="rounded-2xl bg-white border border-navy-900/5 shadow-card p-6 sm:p-9">
-          <h2 className="font-display text-xl font-bold text-navy-950 mb-5">Envoyer un message</h2>
-          <QuoteForm type="CONTACT" submitLabel="Envoyer" />
-        </div>
+        <Reveal delay={0.1}>
+          <div className="rounded-2xl bg-white border border-navy-900/5 shadow-card p-6 sm:p-9">
+            <h2 className="font-display text-xl font-bold text-navy-950 mb-5">Envoyer un message</h2>
+            <QuoteForm type="CONTACT" submitLabel="Envoyer" />
+          </div>
+        </Reveal>
       </div>
     </main>
   );

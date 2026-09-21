@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
 import Link from "next/link";
+import { MotionConfig } from "framer-motion";
 import { Header } from "@/components/Header";
+import { MobileCta } from "@/components/MobileCta";
 import { IconPhone, IconMail, IconPin } from "@/components/icons";
 import { SITE } from "@/lib/site";
 import "./globals.css";
@@ -38,15 +40,40 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  name: SITE.name,
+  description: `Nettoyage, entretien et petits travaux à ${SITE.zone} et dans un rayon de ${SITE.zoneRadiusKm} km. Devis gratuit.`,
+  url: SITE.url,
+  telephone: SITE.phone,
+  email: SITE.email,
+  areaServed: {
+    "@type": "GeoCircle",
+    geoMidpoint: { "@type": "GeoCoordinates", address: SITE.zone },
+    geoRadius: `${Number(SITE.zoneRadiusKm) * 1000}`,
+  },
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${manrope.variable} ${inter.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-screen bg-mist-50 text-navy-900 font-sans antialiased flex flex-col">
-        <Header />
+        <MotionConfig reducedMotion="user">
+          <Header />
 
-        <div className="flex-1">{children}</div>
+          <div className="flex-1 pb-24 md:pb-0">{children}</div>
 
-        <footer className="bg-navy-950 text-white mt-24">
+          <MobileCta />
+
+          <footer className="bg-navy-950 text-white mt-24">
           <div className="container py-14 grid gap-10 sm:grid-cols-3 text-sm">
             <div>
               <p className="font-display text-lg font-bold mb-3">
@@ -112,7 +139,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </nav>
             <p>© {new Date().getFullYear()} {SITE.name}. Tous droits réservés.</p>
           </div>
-        </footer>
+          </footer>
+        </MotionConfig>
       </body>
     </html>
   );
