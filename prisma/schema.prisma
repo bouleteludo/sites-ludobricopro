@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// A devis (quote), rendez-vous (appointment) or contact request submitted from the site.
+model Lead {
+  id            String    @id @default(cuid())
+  // One of: DEVIS, RENDEZVOUS, CONTACT
+  type          String
+  name          String
+  phone         String
+  email         String?
+  service       String
+  city          String?
+  message       String?
+  preferredDate DateTime?
+  preferredTime String?
+  // One of: NOUVEAU, CONTACTE, TRAITE
+  status        String    @default("NOUVEAU")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
