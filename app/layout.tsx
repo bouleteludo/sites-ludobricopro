@@ -24,13 +24,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
+    default: `Nettoyage, toiture & petits travaux à ${SITE.zone} · ${SITE.name}`,
     template: `%s · ${SITE.name}`,
   },
-  description: `Nettoyage, entretien et petits travaux à ${SITE.zone} et dans un rayon de ${SITE.zoneRadiusKm} km. Devis gratuit, intervention rapide.`,
+  description: `${SITE.name}, artisan multiservice à ${SITE.zone} (${SITE.zoneRadiusKm} km) : nettoyage de maison, démoussage toiture et façade, petit bricolage, entretien des espaces verts. Devis gratuit, paiement jusqu'à 3× sans frais.`,
   openGraph: {
     title: `${SITE.name} — ${SITE.tagline}`,
-    description: `Nettoyage, entretien et petits travaux à ${SITE.zone}. Devis gratuit.`,
+    description: `Nettoyage, toiture, façade, bricolage et entretien à ${SITE.zone} et alentours. Devis gratuit.`,
     url: SITE.url,
     siteName: SITE.name,
     locale: "fr_FR",

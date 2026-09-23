@@ -13,6 +13,9 @@ export const SITE = {
   url: env("NEXT_PUBLIC_SITE_URL", "https://ludobricopro.vercel.app"),
 };
 
+// Towns within the intervention radius, shown for local SEO — adjust to the real coverage.
+export const ZONE_TOWNS = ["Saintes", "Cognac", "Royan", "Rochefort", "Jonzac", "Saint-Jean-d'Angély", "Pons", "Marennes"];
+
 export type Service = {
   slug: string;
   title: string;

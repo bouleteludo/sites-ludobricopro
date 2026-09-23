@@ -36,10 +36,8 @@ export function Header() {
       }`}
     >
       <nav className="container flex items-center justify-between py-3.5">
-        <Link href="/" className="flex items-center gap-2 group" aria-label={`${SITE.name} — accueil`}>
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-navy-800 text-white">
-            <IconHome className="h-5 w-5" />
-          </span>
+        <Link href="/" className="flex items-center gap-3 group" aria-label={`${SITE.name} — accueil`}>
+          <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-navy-900 text-white shadow-sm"><IconHome className="h-5 w-5" /><span className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full bg-leaf-500" /></span>
           <span className="font-display text-lg sm:text-xl font-bold text-navy-900 tracking-tight">
             Ludo<span className="text-leaf-600">Brico</span>Pro
           </span>

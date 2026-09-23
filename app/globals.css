@@ -42,3 +42,207 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+@layer components {
+  .hero-grid {
+    background-image:
+      radial-gradient(circle at 70% 15%, rgba(47, 158, 79, 0.11), transparent 26%),
+      radial-gradient(circle at 95% 70%, rgba(33, 86, 120, 0.09), transparent 25%),
+      linear-gradient(rgba(12, 35, 56, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(12, 35, 56, 0.035) 1px, transparent 1px);
+    background-size: auto, auto, 72px 72px, 72px 72px;
+    mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  }
+
+  .brush-wrap {
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+    white-space: nowrap;
+  }
+  .brush-underline {
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    bottom: 0.02em;
+    height: 0.2em;
+    border-radius: 50%;
+    background: #8ad63d;
+    transform: rotate(-1.5deg);
+    z-index: -1;
+  }
+
+  .brand-ribbon {
+    background: linear-gradient(90deg, #0c2338, #155a86 45%, #0c2338);
+    border-block: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .brand-ribbon i {
+    height: 5px;
+    width: 5px;
+    border-radius: 999px;
+    background: #8bd83e;
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #237a3f;
+  }
+  .section-heading {
+    margin-top: 0.65rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.6vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: #081826;
+  }
+
+  .premium-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    border-radius: 999px;
+    padding: 0.95rem 1.45rem;
+    font-size: 0.95rem;
+    font-weight: 800;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .premium-btn:hover {
+    transform: translateY(-2px);
+  }
+  .premium-btn-primary {
+    background: #2f9e4f;
+    color: white;
+    box-shadow: 0 16px 30px -18px rgba(35, 122, 63, 0.8);
+  }
+  .premium-btn-primary:hover {
+    background: #237a3f;
+    box-shadow: 0 20px 36px -18px rgba(35, 122, 63, 0.85);
+  }
+  .premium-btn-secondary {
+    border: 1px solid rgba(12, 35, 56, 0.15);
+    background: white;
+    color: #0c2338;
+  }
+  .premium-btn-secondary:hover {
+    border-color: rgba(12, 35, 56, 0.3);
+    box-shadow: 0 12px 30px -20px rgba(8, 24, 38, 0.45);
+  }
+
+  .service-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(12, 35, 56, 0.08);
+    border-radius: 1.5rem;
+    background: white;
+    padding: 1.5rem;
+    box-shadow: 0 12px 34px -24px rgba(8, 24, 38, 0.35);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .service-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, #215678, #2f9e4f);
+    transform: scaleX(0.2);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+  .service-card:hover,
+  .service-card:focus-within {
+    transform: translateY(-8px);
+    border-color: rgba(47, 158, 79, 0.22);
+    box-shadow: 0 30px 55px -32px rgba(8, 24, 38, 0.45);
+  }
+  .service-card:hover::before,
+  .service-card:focus-within::before {
+    transform: scaleX(1);
+  }
+  .service-icon {
+    display: inline-flex;
+    height: 3.25rem;
+    width: 3.25rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    color: white;
+    box-shadow: 0 10px 20px -12px rgba(8, 24, 38, 0.5);
+  }
+  .service-icon-blue {
+    background: #215678;
+  }
+  .service-icon-green {
+    background: #237a3f;
+  }
+
+  .process-card {
+    height: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    padding-top: 1.2rem;
+  }
+  .process-card > span {
+    font-family: var(--font-display);
+    font-size: 3.2rem;
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.18);
+  }
+  .process-card h3 {
+    margin-top: 0.65rem;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 800;
+  }
+  .process-card p {
+    margin-top: 0.55rem;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  .payment-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.5rem;
+    border-radius: 2rem;
+    background: linear-gradient(120deg, #0c2338, #123f5c);
+    padding: 2rem;
+    color: white;
+    box-shadow: 0 30px 70px -45px rgba(8, 24, 38, 0.75);
+  }
+  .payment-icon {
+    display: flex;
+    height: 4rem;
+    width: 4rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.25rem;
+    background: #2f9e4f;
+  }
+
+  @media (max-width: 767px) {
+    .payment-card {
+      grid-template-columns: auto 1fr;
+    }
+    .payment-card > a {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+    .hero-grid {
+      background-size: auto, auto, 44px 44px, 44px 44px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .service-card,
+    .premium-btn {
+      transition: none;
+    }
+  }
+}
