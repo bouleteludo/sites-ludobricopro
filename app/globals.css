@@ -25,7 +25,7 @@
 
 @layer components {
   .input {
-    @apply w-full rounded-lg border border-navy-900/15 bg-white px-3.5 py-2.5 text-navy-900 placeholder:text-navy-900/35 focus:border-leaf-500 transition-colors;
+    @apply w-full rounded-xl border border-navy-900/15 bg-white px-4 py-3 text-navy-900 placeholder:text-navy-900/50 focus:border-leaf-500 transition-colors;
   }
 }
 
@@ -114,14 +114,67 @@
   .premium-btn:hover {
     transform: translateY(-2px);
   }
+  /* #237a3f carries white text at 5.3:1 (AA) — the old #2f9e4f was 3.4:1. */
   .premium-btn-primary {
-    background: #2f9e4f;
+    background: #237a3f;
     color: white;
     box-shadow: 0 16px 30px -18px rgba(35, 122, 63, 0.8);
   }
   .premium-btn-primary:hover {
-    background: #237a3f;
+    background: #1c6533;
     box-shadow: 0 20px 36px -18px rgba(35, 122, 63, 0.85);
+  }
+  /* On dark sections: luminous green + navy text (≈8:1) keeps the main action the brightest element. */
+  .premium-btn-glow {
+    background: #4dbb68;
+    color: #081826;
+    box-shadow: 0 18px 40px -18px rgba(77, 187, 104, 0.9);
+  }
+  .premium-btn-glow:hover {
+    background: #6fd087;
+  }
+  .premium-btn-ghost {
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+  }
+  .premium-btn-ghost:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .hero-dark {
+    background:
+      radial-gradient(ellipse 60% 55% at 85% 20%, rgba(77, 187, 104, 0.18), transparent 60%),
+      radial-gradient(ellipse 50% 60% at 0% 100%, rgba(43, 106, 148, 0.35), transparent 60%),
+      #081826;
+  }
+  .hero-dark-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 80%);
+  }
+
+  .photo-card img {
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .photo-card:hover img,
+  .photo-card:focus-within img {
+    transform: scale(1.06);
+  }
+
+  /* Required-field feedback only once the visitor has interacted — no red on page load. */
+  .input:user-invalid {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+  }
+  select.input:invalid {
+    color: rgba(12, 35, 56, 0.55);
+  }
+  select.input option {
+    color: #0c2338;
   }
   .premium-btn-secondary {
     border: 1px solid rgba(12, 35, 56, 0.15);
@@ -223,7 +276,7 @@
     align-items: center;
     justify-content: center;
     border-radius: 1.25rem;
-    background: #2f9e4f;
+    background: #237a3f;
   }
 
   @media (max-width: 767px) {
@@ -241,7 +294,8 @@
 
   @media (prefers-reduced-motion: reduce) {
     .service-card,
-    .premium-btn {
+    .premium-btn,
+    .photo-card img {
       transition: none;
     }
   }

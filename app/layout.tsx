@@ -83,16 +83,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <div>
               <p className="font-medium mb-3">Contact</p>
-              <ul className="text-white/70 space-y-2">
+              <ul className="text-white/70 space-y-1">
                 <li className="flex items-center gap-2">
                   <IconPhone className="h-4 w-4 text-leaf-400" />
-                  <a href={`tel:${SITE.phoneHref}`} className="hover:text-white transition-colors">
+                  <a href={`tel:${SITE.phoneHref}`} className="inline-block py-1.5 hover:text-white transition-colors">
                     {SITE.phone}
                   </a>
                 </li>
                 <li className="flex items-center gap-2">
                   <IconMail className="h-4 w-4 text-leaf-400" />
-                  <a href={`mailto:${SITE.email}`} className="hover:text-white transition-colors">
+                  <a href={`mailto:${SITE.email}`} className="inline-block py-1.5 hover:text-white transition-colors">
                     {SITE.email}
                   </a>
                 </li>
@@ -106,19 +106,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <div>
               <p className="font-medium mb-3">Liens utiles</p>
-              <ul className="text-white/70 space-y-2">
+              <ul className="text-white/70 space-y-1">
                 <li>
-                  <Link href="/services" className="hover:text-white transition-colors">
+                  <Link href="/services" className="inline-block py-1.5 hover:text-white transition-colors">
                     Nos services
                   </Link>
                 </li>
                 <li>
-                  <Link href="/devis" className="hover:text-white transition-colors">
+                  <Link href="/devis" className="inline-block py-1.5 hover:text-white transition-colors">
                     Demander un devis
                   </Link>
                 </li>
                 <li>
-                  <Link href="/rendez-vous" className="hover:text-white transition-colors">
+                  <Link href="/rendez-vous" className="inline-block py-1.5 hover:text-white transition-colors">
                     Prendre rendez-vous
                   </Link>
                 </li>
@@ -127,13 +127,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
           <div className="border-t border-white/10 py-5 flex flex-col items-center gap-3 text-xs text-white/50">
             <nav className="flex flex-wrap justify-center gap-x-4 gap-y-1.5">
-              <Link href="/mentions-legales" className="hover:text-white transition-colors">
+              <Link href="/mentions-legales" className="inline-block py-1.5 hover:text-white transition-colors">
                 Mentions légales
               </Link>
-              <Link href="/cgv" className="hover:text-white transition-colors">
+              <Link href="/cgv" className="inline-block py-1.5 hover:text-white transition-colors">
                 Conditions générales
               </Link>
-              <Link href="/confidentialite" className="hover:text-white transition-colors">
+              <Link href="/confidentialite" className="inline-block py-1.5 hover:text-white transition-colors">
                 Confidentialité
               </Link>
             </nav>

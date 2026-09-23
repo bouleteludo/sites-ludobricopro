@@ -1,5 +1,5 @@
 import { createLead } from "@/lib/actions";
-import { SERVICES } from "@/lib/site";
+import { SERVICES, SITE } from "@/lib/site";
 
 type Props = {
   type: "DEVIS" | "RENDEZVOUS" | "CONTACT";
@@ -69,12 +69,25 @@ export function QuoteForm({ type, submitLabel }: Props) {
         />
       </Field>
 
-      <button
-        type="submit"
-        className="inline-flex items-center justify-center rounded-full bg-leaf-500 hover:bg-leaf-600 text-white font-semibold px-7 py-3.5 transition-colors w-full sm:w-auto"
-      >
-        {submitLabel}
-      </button>
+      <div className="mt-1 flex flex-col gap-4 border-t border-navy-900/10 pt-6">
+        <button type="submit" className="premium-btn premium-btn-primary w-full text-base">
+          {submitLabel} <span aria-hidden>→</span>
+        </button>
+        {/* Reassurance at the moment of commitment — restates facts already shown on the home page. */}
+        <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center text-xs text-navy-900/70">
+          <span>✓ Gratuit et sans engagement</span>
+          <span>✓ Jusqu&apos;à 3× sans frais</span>
+          <span>
+            ✓ Ou appelez le{" "}
+            <a href={`tel:${SITE.phoneHref}`} className="font-semibold text-navy-900 underline underline-offset-2">
+              {SITE.phone}
+            </a>
+          </span>
+        </p>
+        <p className="text-center text-xs text-navy-900/60">
+          <span className="text-leaf-600">*</span> Champs obligatoires
+        </p>
+      </div>
     </form>
   );
 }
@@ -82,9 +95,14 @@ export function QuoteForm({ type, submitLabel }: Props) {
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <label className="block text-sm">
-      <span className="block mb-1.5 font-medium text-navy-900">
+      <span className="block mb-1.5 font-semibold text-navy-900">
         {label}
-        {required && <span className="text-leaf-600"> *</span>}
+        {required && (
+          <span className="text-leaf-600" aria-hidden>
+            {" "}
+            *
+          </span>
+        )}
       </span>
       {children}
     </label>

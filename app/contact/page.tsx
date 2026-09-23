@@ -1,60 +1,63 @@
 import type { Metadata } from "next";
+import { IconMail, IconPhone, IconPin } from "@/components/icons";
+import { PageHeader } from "@/components/PageHeader";
 import { QuoteForm } from "@/components/QuoteForm";
-import { IconPhone, IconMail, IconPin } from "@/components/icons";
 import { Reveal } from "@/components/Reveal";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Contact" };
 
-export default function ContactPage() {
+type Props = { searchParams: Promise<{ erreur?: string }> };
+
+export default async function ContactPage({ searchParams }: Props) {
+  const { erreur } = await searchParams;
+  const channels = [
+    { icon: IconPhone, label: "Téléphone", value: SITE.phone, href: `tel:${SITE.phoneHref}` },
+    { icon: IconMail, label: "Email", value: SITE.email, href: `mailto:${SITE.email}` },
+    { icon: IconPin, label: "Zone d'intervention", value: `à ${SITE.zoneRadiusKm} km autour de ${SITE.zone}` },
+  ];
+
   return (
-    <main className="container py-16 sm:py-20">
-      <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-12">
+    <main>
+      <PageHeader eyebrow="Contact" title="Une question ? Contactez-nous" />
+      <div className="container relative -mt-14 grid gap-8 pb-10 lg:grid-cols-[.8fr_1.2fr]">
         <Reveal>
-          <p className="text-xs tracking-[0.3em] uppercase text-leaf-600 font-semibold mb-3">Contact</p>
-          <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-navy-950 mb-6">
-            Une question ? Contactez-nous
-          </h1>
-          <ul className="space-y-5 text-navy-900/80">
-            <li className="flex items-center gap-3">
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-leaf-100 text-leaf-700 shrink-0">
-                <IconPhone className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-xs text-navy-900/50">Téléphone</p>
-                <a href={`tel:${SITE.phoneHref}`} className="font-semibold hover:text-leaf-600 transition-colors">
-                  {SITE.phone}
-                </a>
-              </div>
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-leaf-100 text-leaf-700 shrink-0">
-                <IconMail className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-xs text-navy-900/50">Email</p>
-                <a href={`mailto:${SITE.email}`} className="font-semibold hover:text-leaf-600 transition-colors">
-                  {SITE.email}
-                </a>
-              </div>
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-leaf-100 text-leaf-700 shrink-0">
-                <IconPin className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-xs text-navy-900/50">Zone d&apos;intervention</p>
-                <p className="font-semibold">
-                  à {SITE.zoneRadiusKm} km autour de {SITE.zone}
-                </p>
-              </div>
-            </li>
+          <ul className="space-y-3 rounded-3xl border border-navy-900/10 bg-white p-4 shadow-card">
+            {channels.map(({ icon: Icon, label, value, href }) => {
+              const content = (
+                <>
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-leaf-100 text-leaf-700">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-xs font-medium text-navy-900/70">{label}</span>
+                    <span className="block truncate font-display text-lg font-bold text-navy-950">{value}</span>
+                  </span>
+                </>
+              );
+              return (
+                <li key={label}>
+                  {href ? (
+                    <a href={href} className="flex items-center gap-4 rounded-2xl p-3 transition-colors hover:bg-mist-50">
+                      {content}
+                    </a>
+                  ) : (
+                    <div className="flex items-center gap-4 p-3">{content}</div>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="rounded-2xl bg-white border border-navy-900/5 shadow-card p-6 sm:p-9">
-            <h2 className="font-display text-xl font-bold text-navy-950 mb-5">Envoyer un message</h2>
+          <div className="rounded-3xl border border-navy-900/10 bg-white p-6 shadow-[0_40px_80px_-40px_rgba(8,24,38,.35)] sm:p-10">
+            <h2 className="mb-6 font-display text-2xl font-bold text-navy-950">Envoyer un message</h2>
+            {erreur === "champs-requis" && (
+              <p role="alert" className="mb-6 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                Merci de renseigner au minimum votre nom et votre téléphone.
+              </p>
+            )}
             <QuoteForm type="CONTACT" submitLabel="Envoyer" />
           </div>
         </Reveal>

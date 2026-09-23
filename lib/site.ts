@@ -20,6 +20,7 @@ export type Service = {
   slug: string;
   title: string;
   icon: "home" | "roof" | "tools" | "leaf";
+  image: string;
   summary: string;
   bullets: string[];
 };
@@ -27,6 +28,7 @@ export type Service = {
 export const SERVICES: Service[] = [
   {
     slug: "nettoyage-batiments",
+    image: "/images/service-nettoyage.webp",
     title: "Nettoyage courant des bâtiments",
     icon: "home",
     summary: "Maisons, appartements, encombrants, succession, débarras...",
@@ -34,6 +36,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "toiture-facade",
+    image: "/images/service-toiture.webp",
     title: "Nettoyage toiture et façade",
     icon: "roof",
     summary: "Démoussage, traitement hydrofuge, nettoyage haute pression.",
@@ -41,6 +44,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "bricolage-depannage",
+    image: "/images/service-bricolage.webp",
     title: "Petit bricolage et dépannage",
     icon: "tools",
     summary: "Petite maçonnerie, plomberie, peinture, montage / fixation, réparations diverses.",
@@ -48,6 +52,7 @@ export const SERVICES: Service[] = [
   },
   {
     slug: "entretien-general",
+    image: "/images/service-entretien.webp",
     title: "Entretien général",
     icon: "leaf",
     summary: "Espaces verts, tonte, taille, débroussaillage, parties communes...",

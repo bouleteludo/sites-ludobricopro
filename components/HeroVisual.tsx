@@ -1,53 +1,118 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { SERVICE_ICONS } from "@/components/icons";
+import Image from "next/image";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
+import type { PointerEvent } from "react";
+import heroImg from "@/public/images/hero-facade.webp";
+import { IconCard, IconPin } from "@/components/icons";
 import { OrbitBadge } from "@/components/OrbitBadge";
-import { SERVICES, SITE } from "@/lib/site";
+import { SITE } from "@/lib/site";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function HeroVisual() {
+  const reduce = useReducedMotion();
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 110, damping: 18 });
+  const sy = useSpring(my, { stiffness: 110, damping: 18 });
+  const rotateY = useTransform(sx, [-0.5, 0.5], [5, -5]);
+  const rotateX = useTransform(sy, [-0.5, 0.5], [-4, 4]);
+  // Chips drift against the photo to create depth; the photo itself only tilts.
+  const chipX = useTransform(sx, [-0.5, 0.5], [16, -16]);
+  const chipY = useTransform(sy, [-0.5, 0.5], [12, -12]);
+
+  function onMove(e: PointerEvent<HTMLDivElement>) {
+    if (reduce || e.pointerType !== "mouse") return;
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set((e.clientX - r.left) / r.width - 0.5);
+    my.set((e.clientY - r.top) / r.height - 0.5);
+  }
+
+  function onLeave() {
+    mx.set(0);
+    my.set(0);
+  }
+
   return (
-    <div className="relative mx-auto w-full max-w-[560px] aspect-[.92/1] lg:aspect-square" aria-hidden>
-      <motion.div initial={{ opacity: 0, scale: .94 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .9, ease: EASE }} className="absolute inset-5 rounded-[2.5rem] bg-navy-950/[.08] blur-2xl" />
-      <motion.div initial={{ opacity: 0, y: 20, rotate: -2 }} animate={{ opacity: 1, y: 0, rotate: 0 }} transition={{ duration: 1, ease: EASE }} className="absolute inset-0 overflow-hidden rounded-[2.25rem] border border-white/70 bg-white shadow-[0_35px_90px_-35px_rgba(8,24,38,.45)]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(77,187,104,.18),transparent_30%),radial-gradient(circle_at_85%_15%,rgba(33,86,120,.18),transparent_34%)]" />
-        <svg viewBox="0 0 600 600" className="absolute inset-0 h-full w-full" aria-hidden>
-          <defs><linearGradient id="sky" x1="0" x2="1"><stop offset="0" stopColor="#eaf7ee"/><stop offset="1" stopColor="#e8f2f8"/></linearGradient><linearGradient id="grass" x1="0" x2="1"><stop offset="0" stopColor="#2f9e4f"/><stop offset="1" stopColor="#237a3f"/></linearGradient></defs>
-          <rect x="0" y="0" width="600" height="600" fill="url(#sky)"/>
-          <circle cx="490" cy="130" r="58" fill="#fff" opacity=".8"/>
-          <path d="M0 390 Q145 320 280 390 T600 365 V600 H0Z" fill="url(#grass)" opacity=".95"/>
-          <path d="M65 360 L285 170 L525 360" fill="#123049"/>
-          <path d="M91 360 L285 200 L497 360" fill="#193f60"/>
-          <rect x="115" y="335" width="345" height="170" rx="12" fill="#fff"/>
-          <rect x="145" y="375" width="72" height="58" rx="7" fill="#dcecf3"/>
-          <rect x="365" y="375" width="65" height="58" rx="7" fill="#dcecf3"/>
-          <rect x="267" y="414" width="72" height="91" rx="9" fill="#2f9e4f"/>
-          <path d="M245 505 Q290 455 335 505" fill="#237a3f" opacity=".22"/>
-          <g fill="#237a3f"><circle cx="92" cy="430" r="26"/><circle cx="505" cy="430" r="34"/><circle cx="540" cy="402" r="22"/></g>
-          <g fill="#4dbb68"><circle cx="67" cy="455" r="20"/><circle cx="525" cy="455" r="24"/></g>
-          <path d="M105 520 Q190 478 275 525 T455 520" fill="none" stroke="#fff" strokeWidth="5" opacity=".75"/>
-        </svg>
-
-        <div className="absolute left-5 top-5 rounded-2xl border border-navy-900/10 bg-white/90 px-4 py-3 backdrop-blur">
-          <p className="text-[10px] font-bold uppercase tracking-[.22em] text-leaf-600">{SITE.name}</p>
-          <p className="mt-0.5 text-xs font-medium text-navy-900/70">
-            {SITE.zone} · jusqu&apos;à {SITE.zoneRadiusKm} km
-          </p>
+    <div onPointerMove={onMove} onPointerLeave={onLeave} className="relative mx-auto w-full max-w-[540px] py-6">
+      <motion.div
+        initial={{ opacity: 0, y: 30, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 1, ease: EASE }}
+        style={{ rotateX, rotateY, transformPerspective: 1200 }}
+        className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-navy-900 shadow-[0_50px_100px_-40px_rgba(0,0,0,.85)]"
+      >
+        <Image
+          src={heroImg}
+          alt="Nettoyage haute pression d'une façade de maison"
+          priority
+          placeholder="blur"
+          sizes="(min-width: 1024px) 540px, 92vw"
+          className="aspect-[5/4] w-full object-cover object-[62%_50%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/10 to-transparent" />
+        <div className="absolute inset-x-5 bottom-5 flex items-end justify-between gap-4 text-white">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[.22em] text-leaf-300">Toiture &amp; façade</p>
+            <p className="mt-1 font-display text-lg font-bold leading-tight sm:text-xl">
+              Démoussage, hydrofuge,
+              <br />
+              nettoyage haute pression
+            </p>
+          </div>
         </div>
+      </motion.div>
 
-        <motion.div animate={{ y: [0, -7, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-5 left-5 rounded-2xl border border-white/70 bg-navy-950 px-4 py-3 text-white shadow-xl">
-          <p className="text-[10px] uppercase tracking-[.2em] text-white/55">Votre maison</p><p className="font-display text-base font-bold">en de bonnes mains</p>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, delay: 0.5, ease: EASE }}
+        className="absolute -left-3 top-2 sm:-left-8"
+      >
+        <motion.div
+          style={{ x: chipX, y: chipY }}
+          className="flex items-center gap-3 rounded-2xl border border-white/15 bg-navy-900/70 px-4 py-3 text-white shadow-2xl backdrop-blur-md"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-leaf-400 text-navy-950">
+            <IconPin className="h-5 w-5" />
+          </span>
+          <span className="leading-tight">
+            <span className="block text-sm font-bold">{SITE.zone} &amp; alentours</span>
+            <span className="block text-xs text-white/70">jusqu&apos;à {SITE.zoneRadiusKm} km</span>
+          </span>
         </motion.div>
       </motion.div>
 
-      {SERVICES.map((service, i) => {
-        const Icon = SERVICE_ICONS[service.icon];
-        const positions = ["-left-4 top-[30%]", "-right-4 top-[22%]", "-left-3 bottom-[20%]", "-right-3 bottom-[24%]"];
-        return <motion.div key={service.slug} className={`absolute ${positions[i]} z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-white bg-white text-navy-800 shadow-[0_18px_35px_-15px_rgba(8,24,38,.45)]`} initial={{ opacity: 0, scale: .7 }} animate={{ opacity: 1, scale: 1, y: [0, -5, 0] }} transition={{ opacity: { duration: .5, delay: .45 + i*.1 }, scale: { duration: .5, delay: .45 + i*.1 }, y: { duration: 4+i*.35, repeat: Infinity, ease: "easeInOut", delay: i*.25 } }}><Icon className="h-6 w-6" /></motion.div>;
-      })}
-      <motion.div className="absolute -right-2 -top-3 z-20" initial={{ opacity: 0, scale: .7 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .6, delay: .7, ease: EASE }}><OrbitBadge size={112}/></motion.div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.85 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.7, delay: 0.7, ease: EASE }}
+        className="absolute -right-8 bottom-0 hidden sm:block"
+      >
+        <motion.div
+          style={{ x: chipX, y: chipY }}
+          className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-navy-950 shadow-2xl"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-leaf-100 text-leaf-700">
+            <IconCard className="h-5 w-5" />
+          </span>
+          <span className="leading-tight">
+            <span className="block text-sm font-bold">Jusqu&apos;à 3× sans frais</span>
+            <span className="block text-xs text-navy-900/65">paiement en plusieurs fois</span>
+          </span>
+        </motion.div>
+      </motion.div>
+
+      <motion.div
+        className="absolute -right-1 -top-4 text-white sm:-right-10"
+        initial={{ opacity: 0, scale: 0.6, rotate: -30 }}
+        animate={{ opacity: 1, scale: 1, rotate: 0 }}
+        transition={{ duration: 0.8, delay: 0.9, ease: EASE }}
+        aria-hidden
+      >
+        <OrbitBadge size={116} />
+      </motion.div>
     </div>
   );
 }

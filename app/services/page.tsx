@@ -1,67 +1,70 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SERVICE_ICONS, IconCheck } from "@/components/icons";
+import { PageHeader } from "@/components/PageHeader";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
-import { SERVICES } from "@/lib/site";
+import { SERVICES, SITE } from "@/lib/site";
 
-export const metadata: Metadata = { title: "Nos services" };
+export const metadata: Metadata = {
+  title: "Nos services",
+  description: `Nettoyage de maison, démoussage de toiture, nettoyage de façade, petit bricolage et entretien des espaces verts à ${SITE.zone} et dans un rayon de ${SITE.zoneRadiusKm} km.`,
+};
 
 export default function ServicesPage() {
   return (
-    <main className="container py-16 sm:py-20">
-      <Reveal className="max-w-2xl mb-14">
-        <p className="text-xs tracking-[0.3em] uppercase text-leaf-600 font-semibold mb-3">Nos services</p>
-        <h1 className="font-display text-4xl sm:text-5xl font-extrabold text-navy-950 mb-5">
-          Un seul pro, pour tout entreprendre
-        </h1>
-        <p className="text-navy-900/70 text-lg leading-relaxed">
-          De l&apos;entretien courant aux petits travaux, on s&apos;occupe de votre intérieur et de votre
-          extérieur avec le même soin.
-        </p>
-      </Reveal>
+    <main>
+      <PageHeader
+        eyebrow="Nos services"
+        title="Un seul pro, pour tout entreprendre"
+        intro="De l'entretien courant aux petits travaux, on s'occupe de votre intérieur et de votre extérieur avec le même soin."
+      />
 
-      <RevealGroup className="grid gap-6">
-        {SERVICES.map((service, i) => {
-          const Icon = SERVICE_ICONS[service.icon];
-          return (
-            <RevealItem key={service.slug}>
-              <div
-                id={service.slug}
-                className="scroll-mt-24 rounded-2xl bg-white border border-navy-900/5 shadow-card p-7 sm:p-9 grid sm:grid-cols-[auto_1fr] gap-6 sm:gap-8 items-start transition-shadow duration-300 hover:shadow-xl"
-              >
-                <span
-                  className={`inline-flex h-14 w-14 items-center justify-center rounded-full text-white shrink-0 ${
-                    i % 2 === 0 ? "bg-navy-700" : "bg-leaf-500"
-                  }`}
+      <div className="container relative -mt-14 pb-10">
+        <RevealGroup className="grid gap-6">
+          {SERVICES.map((service) => {
+            const Icon = SERVICE_ICONS[service.icon];
+            return (
+              <RevealItem key={service.slug}>
+                <article
+                  id={service.slug}
+                  className="photo-card scroll-mt-24 grid overflow-hidden rounded-3xl border border-navy-900/10 bg-white shadow-card transition-shadow duration-300 hover:shadow-[0_30px_60px_-30px_rgba(8,24,38,.4)] md:grid-cols-[minmax(0,340px)_1fr]"
                 >
-                  <Icon className="h-7 w-7" />
-                </span>
-                <div>
-                  <h2 className="font-display text-2xl font-bold text-navy-950 mb-2">{service.title}</h2>
-                  <p className="text-navy-900/60 mb-5">{service.summary}</p>
-                  <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-navy-900/80">
-                    {service.bullets.map((b) => (
-                      <li key={b} className="flex items-start gap-2">
-                        <IconCheck className="h-4 w-4 text-leaf-600 mt-0.5 shrink-0" />
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </RevealItem>
-          );
-        })}
-      </RevealGroup>
+                  <div className="relative aspect-[16/9] overflow-hidden bg-navy-900 md:aspect-auto md:min-h-[240px]">
+                    <Image src={service.image} alt="" fill sizes="(min-width: 768px) 340px, 92vw" className="object-cover" />
+                  </div>
+                  <div className="p-7 sm:p-9">
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-navy-800 text-white">
+                        <Icon className="h-6 w-6" />
+                      </span>
+                      <h2 className="font-display text-2xl font-bold text-navy-950">{service.title}</h2>
+                    </div>
+                    <p className="mt-4 text-navy-900/70">{service.summary}</p>
+                    <ul className="mt-5 grid gap-x-6 gap-y-2 text-sm text-navy-900/85 sm:grid-cols-2">
+                      {service.bullets.map((b) => (
+                        <li key={b} className="flex items-start gap-2">
+                          <IconCheck className="mt-0.5 h-4 w-4 shrink-0 text-leaf-500" />
+                          <span>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <Link href="/devis" className="premium-btn premium-btn-secondary mt-7">
+                      Demander un devis pour ce service <span aria-hidden>→</span>
+                    </Link>
+                  </div>
+                </article>
+              </RevealItem>
+            );
+          })}
+        </RevealGroup>
 
-      <Reveal className="text-center mt-16">
-        <Link
-          href="/devis"
-          className="inline-flex items-center justify-center rounded-full bg-leaf-500 hover:bg-leaf-600 text-white font-semibold px-8 py-3.5 transition-colors"
-        >
-          Demander un devis gratuit
-        </Link>
-      </Reveal>
+        <Reveal className="mt-16 text-center">
+          <Link href="/devis" className="premium-btn premium-btn-primary text-base">
+            Demander un devis gratuit <span aria-hidden>→</span>
+          </Link>
+        </Reveal>
+      </div>
     </main>
   );
 }
