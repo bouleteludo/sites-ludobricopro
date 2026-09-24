@@ -32,14 +32,18 @@ Toutes les demandes (devis, rendez-vous, contact) sont stockées dans une seule 
 ## Déploiement (Vercel + GitHub)
 
 1. Sur [vercel.com](https://vercel.com), **Add New → Project**, puis importe le dépôt
-   GitHub `bouleteludo/ludobricopro`.
-2. Dans l'onglet **Storage** du projet Vercel, crée une base **Postgres** (Neon) et
-   copie la valeur générée de `POSTGRES_PRISMA_URL` dans la variable d'environnement
-   `DATABASE_URL` du projet (**Project Settings → Environment Variables**).
-3. Ajoute les autres variables listées dans `.env.example` (`ADMIN_PASSWORD`,
-   `NEXT_PUBLIC_SITE_URL`, coordonnées de contact, informations légales...).
-4. Déploie. Chaque push sur la branche connectée redéploie automatiquement, et
-   `prisma db push` synchronise le schéma avec la base à chaque build.
+   GitHub `bouleteludo/sites-ludobricopro`.
+2. Dans l'onglet **Storage** du projet, **Create Database → Neon**, puis connecte-la au
+   projet sans préfixe : Vercel crée alors la variable `DATABASE_URL`.
+3. Dans **Settings → Environment Variables**, ajoute `ADMIN_PASSWORD` et les autres
+   variables de `.env.example` (coordonnées, informations légales...).
+4. Chaque push sur `main` redéploie automatiquement. `prisma db push` synchronise le
+   schéma à chaque build ; s'il échoue (base absente), le build continue et les
+   formulaires invitent le visiteur à appeler.
+
+**Important (offre Vercel Hobby) :** Vercel bloque tout déploiement dont l'auteur du
+commit n'est pas le propriétaire du compte Vercel (ni co-auteur externe). Les commits
+poussés sur `main` doivent donc être signés par le compte GitHub `bouleteludo`.
 
 ## Démarrer en local
 
