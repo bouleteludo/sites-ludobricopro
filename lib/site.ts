@@ -1,5 +1,15 @@
+// Empty or whitespace-only variables (e.g. added blank in Vercel) fall back to the default.
 function env(key: string, fallback: string) {
-  return process.env[key] ?? fallback;
+  const value = process.env[key]?.trim();
+  return value ? value : fallback;
+}
+
+function siteUrl() {
+  const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  const fallback = vercelUrl ? `https://${vercelUrl}` : "https://sites-ludobricopro.vercel.app";
+  const value = env("NEXT_PUBLIC_SITE_URL", fallback);
+  const withProtocol = /^https?:\/\//.test(value) ? value : `https://${value}`;
+  return URL.canParse(withProtocol) ? withProtocol : fallback;
 }
 
 export const SITE = {
@@ -10,7 +20,7 @@ export const SITE = {
   email: env("NEXT_PUBLIC_CONTACT_EMAIL", "ludo172300@gmail.com"),
   zone: env("NEXT_PUBLIC_ZONE", "Saintes"),
   zoneRadiusKm: env("NEXT_PUBLIC_ZONE_RADIUS_KM", "60"),
-  url: env("NEXT_PUBLIC_SITE_URL", "https://ludobricopro.vercel.app"),
+  url: siteUrl(),
 };
 
 // Towns within the intervention radius, shown for local SEO — adjust to the real coverage.

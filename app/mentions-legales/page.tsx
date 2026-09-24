@@ -4,7 +4,8 @@ import { SITE } from "@/lib/site";
 export const metadata: Metadata = { title: "Mentions légales" };
 
 function env(key: string, fallback = "À compléter avant mise en ligne") {
-  return process.env[key] ?? fallback;
+  const value = process.env[key]?.trim();
+  return value ? value : fallback;
 }
 
 export default function MentionsLegalesPage() {
