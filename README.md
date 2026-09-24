@@ -37,7 +37,11 @@ Toutes les demandes (devis, rendez-vous, contact) sont stockées dans une seule 
    projet sans préfixe : Vercel crée alors la variable `DATABASE_URL`.
 3. Dans **Settings → Environment Variables**, ajoute `ADMIN_PASSWORD` et les autres
    variables de `.env.example` (coordonnées, informations légales...).
-4. Chaque push sur `main` redéploie automatiquement. `prisma db push` synchronise le
+4. **Emails de demande** : crée un compte gratuit sur [resend.com](https://resend.com) avec
+   l'adresse qui doit recevoir les demandes, crée une clé API (**API Keys → Create**) et
+   ajoute-la dans Vercel sous le nom `RESEND_API_KEY`. Sans nom de domaine vérifié, Resend
+   n'envoie qu'à l'adresse du compte : c'est suffisant pour recevoir ses propres demandes.
+5. Chaque push sur `main` redéploie automatiquement. `prisma db push` synchronise le
    schéma à chaque build ; s'il échoue (base absente), le build continue et les
    formulaires invitent le visiteur à appeler.
 

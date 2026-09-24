@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { sendLeadEmail } from "@/lib/notify";
 import { prisma } from "@/lib/prisma";
 
 function str(formData: FormData, key: string): string | null {
@@ -20,31 +21,33 @@ export async function createLead(formData: FormData) {
     redirect(`${formPage}?erreur=champs-requis`);
   }
 
-  const preferredDateRaw = str(formData, "preferredDate");
+  const lead = {
+    type,
+    name,
+    phone,
+    email: str(formData, "email"),
+    service,
+    city: str(formData, "city"),
+    message: str(formData, "message"),
+    preferredDate: str(formData, "preferredDate"),
+    preferredTime: str(formData, "preferredTime"),
+  };
 
-  let saved = false;
-  try {
-    await prisma.lead.create({
-      data: {
-        type,
-        name,
-        phone,
-        email: str(formData, "email"),
-        service,
-        city: str(formData, "city"),
-        message: str(formData, "message"),
-        preferredDate: preferredDateRaw ? new Date(preferredDateRaw) : null,
-        preferredTime: str(formData, "preferredTime"),
-      },
-    });
-    saved = true;
-  } catch (error) {
-    // Database unreachable or not configured: keep the visitor on the form with a way to call instead.
-    console.error("createLead failed", error);
-  }
+  // Database record (for /admin) and email notification run independently:
+  // the request is only lost if both fail.
+  const [saved, mailed] = await Promise.all([
+    prisma.lead
+      .create({ data: { ...lead, preferredDate: lead.preferredDate ? new Date(lead.preferredDate) : null } })
+      .then(() => true)
+      .catch((error: unknown) => {
+        console.error("createLead: database save failed", error);
+        return false;
+      }),
+    sendLeadEmail(lead),
+  ]);
 
-  // redirect() throws, so it must stay outside the try/catch.
-  redirect(saved ? `/merci?type=${type}` : `${formPage}?erreur=envoi`);
+  // redirect() throws, so it must stay outside any try/catch.
+  redirect(saved || mailed ? `/merci?type=${type}` : `${formPage}?erreur=envoi`);
 }
 
 const VALID_STATUSES = ["NOUVEAU", "CONTACTE", "TRAITE"];
