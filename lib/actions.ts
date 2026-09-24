@@ -14,28 +14,37 @@ export async function createLead(formData: FormData) {
   const name = str(formData, "name");
   const phone = str(formData, "phone");
   const service = str(formData, "service") ?? "Autre";
+  const formPage = type === "RENDEZVOUS" ? "/rendez-vous" : type === "CONTACT" ? "/contact" : "/devis";
 
   if (!name || !phone) {
-    redirect(`/${type === "RENDEZVOUS" ? "rendez-vous" : type === "CONTACT" ? "contact" : "devis"}?erreur=champs-requis`);
+    redirect(`${formPage}?erreur=champs-requis`);
   }
 
   const preferredDateRaw = str(formData, "preferredDate");
 
-  await prisma.lead.create({
-    data: {
-      type,
-      name,
-      phone,
-      email: str(formData, "email"),
-      service,
-      city: str(formData, "city"),
-      message: str(formData, "message"),
-      preferredDate: preferredDateRaw ? new Date(preferredDateRaw) : null,
-      preferredTime: str(formData, "preferredTime"),
-    },
-  });
+  let saved = false;
+  try {
+    await prisma.lead.create({
+      data: {
+        type,
+        name,
+        phone,
+        email: str(formData, "email"),
+        service,
+        city: str(formData, "city"),
+        message: str(formData, "message"),
+        preferredDate: preferredDateRaw ? new Date(preferredDateRaw) : null,
+        preferredTime: str(formData, "preferredTime"),
+      },
+    });
+    saved = true;
+  } catch (error) {
+    // Database unreachable or not configured: keep the visitor on the form with a way to call instead.
+    console.error("createLead failed", error);
+  }
 
-  redirect(`/merci?type=${type}`);
+  // redirect() throws, so it must stay outside the try/catch.
+  redirect(saved ? `/merci?type=${type}` : `${formPage}?erreur=envoi`);
 }
 
 const VALID_STATUSES = ["NOUVEAU", "CONTACTE", "TRAITE"];

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IconMail, IconPhone, IconPin } from "@/components/icons";
+import { FormAlert } from "@/components/FormAlert";
 import { PageHeader } from "@/components/PageHeader";
 import { QuoteForm } from "@/components/QuoteForm";
 import { Reveal } from "@/components/Reveal";
@@ -53,11 +54,7 @@ export default async function ContactPage({ searchParams }: Props) {
         <Reveal delay={0.1}>
           <div className="rounded-3xl border border-navy-900/10 bg-white p-6 shadow-[0_40px_80px_-40px_rgba(8,24,38,.35)] sm:p-10">
             <h2 className="mb-6 font-display text-2xl font-bold text-navy-950">Envoyer un message</h2>
-            {erreur === "champs-requis" && (
-              <p role="alert" className="mb-6 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-                Merci de renseigner au minimum votre nom et votre téléphone.
-              </p>
-            )}
+            <FormAlert erreur={erreur} />
             <QuoteForm type="CONTACT" submitLabel="Envoyer" />
           </div>
         </Reveal>
